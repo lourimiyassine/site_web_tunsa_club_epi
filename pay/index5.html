@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Panier</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    #cart {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    #cart-items {
+      list-style: none;
+      padding: 0;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .remove-button {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #checkout-button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Mon Panier</h2>
+  <ul id="panier">
+</ul>
+  <div id="cart">
+    <ul id="cart-items"></ul>
+    <p>Total: <span id="total">0</span> €</p>
+    <a id="checkout-button" href="../game/index.html">Valider l'achat</a>
+  </div>
+
+  <script>
+  
+    const cartItems = [
+      { id: 1, name: 'Produit 1', price: 20 },
+      { id: 2, name: 'Produit 2', price: 30 },
+      { id: 3, name: 'Produit 3', price: 15 }
+    ];
+  
+   function ajouterAuPanier(nomProduit, prixProduit) {
+    var produit = {
+        nom: nomProduit,
+        prix: prixProduit
+    };
+    ajouterProduitAuPanier(produit);
+}
+
+function ajouterProduitAuPanier(produit) {
+    var panier = document.getElementById("panier");
+
+    var nouvelElement = document.createElement("li");
+    nouvelElement.textContent = produit.nom + " - $" + produit.prix;
+    panier.appendChild(nouvelElement);
+}
+    function displayCartItems() {
+      const cartItemsElement = document.getElementById('cart-items');
+      const totalElement = document.getElementById('total');
+      let total = 0;
+
+      cartItemsElement.innerHTML = '';
+
+      cartItems.forEach(item => {
+        const listItem = document.createElement('li');
+        listItem.className = 'cart-item';
+        listItem.innerHTML = `
+          <span>${item.name}</span>
+          <span>${item.price} €</span>
+          <button class="remove-button" onclick="removeItem(${item.id})">Retirer</button>
+        `;
+
+        total += item.price;
+        cartItemsElement.appendChild(listItem);
+      });
+
+      totalElement.textContent = total;
+    }
+
+    // Fonction pour retirer un article du panier
+    function removeItem(itemId) {
+      const index = cartItems.findIndex(item => item.id === itemId);
+      if (index !== -1) {
+        cartItems.splice(index, 1);
+        displayCartItems();
+      }
+    }
+
+    
+    // Afficher les articles initiaux dans le panier
+    displayCartItems();
+  </script>
+
+</body>
+</html>
